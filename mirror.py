@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import pyglet
 import time
 import locale
@@ -7,6 +10,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 window = pyglet.window.Window(fullscreen=True)
+pyglet.font.add_file('fonts/BenchNine.ttf')
+BenchNine = pyglet.font.load('BenchNine')
 
 @window.event
 def on_draw():
@@ -17,8 +22,8 @@ def on_draw():
 
 class T:
     def __init__(self, *args, **kwargs):
-        self.time = pyglet.text.Label('', font_name='Times New Roman', font_size=90, x=1300, y=900)
-        self.date = pyglet.text.Label('', font_name='Times New Roman', font_size=50, x=1310, y=800)
+        self.time = pyglet.text.Label('', font_name='BenchNine', font_size=90, x=1300, y=900)
+        self.date = pyglet.text.Label('', font_name='BenchNine', font_size=50, x=1310, y=800)
         self.tick()
 
     def tick(self, *args):
