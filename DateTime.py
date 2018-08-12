@@ -4,9 +4,6 @@
 import pyglet
 import time
 
-pyglet.font.add_file('fonts/BenchNine.ttf')
-BenchNine = pyglet.font.load('BenchNine')
-
 class DateTime:
     def __init__(self):
         self.time = pyglet.text.Label('', font_name='BenchNine', font_size=90, x=1300, y=900)

@@ -13,6 +13,9 @@ sys.setdefaultencoding('utf-8')
 
 window = pyglet.window.Window(fullscreen=True)
 
+pyglet.font.add_file('fonts/BenchNine.ttf')
+BenchNine = pyglet.font.load('BenchNine')
+
 @window.event
 def on_draw():
     window.clear()

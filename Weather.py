@@ -5,9 +5,6 @@ import pyglet
 import requests
 import json
 
-pyglet.font.add_file('fonts/BenchNine.ttf')
-BenchNine = pyglet.font.load('BenchNine')
-
 class Weather:
 	def __init__(self, *args, **kwargs):
 		self.api = 'https://api.openweathermap.org/data/2.5/forecast?q=B%C3%ADlovec,CZ&appid=***&units=metric&lang=cz'
