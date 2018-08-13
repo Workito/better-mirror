@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pyglet
+import pyglet                                                           
+from pyglet.gl import *
 import locale
 import sys
 import json
@@ -15,15 +16,17 @@ sys.setdefaultencoding('utf-8')
 with open('./config.json', 'r') as f:
     config = json.load(f)
 
-window = pyglet.window.Window(fullscreen=True)
+c = pyglet.gl.Config(sample_buffers=1, samples=4)
+window = pyglet.window.Window(config=c, fullscreen=True)
 
-pyglet.font.add_file('./static/font/BenchNine.ttf')
-BenchNine = pyglet.font.load('BenchNine')
+pyglet.font.add_file('./static/font/BreeSerif-Regular.ttf')
+pyglet.font.load('Bree Serif')
 
 @window.event
 def on_draw():
     window.clear()
     dateTiem.draw()
+    weather.draw()
 
 
 if __name__ == '__main__':

@@ -1,10 +1,18 @@
 {
 	"DATETIME": {
 		"timeformat": "%H:%I:%S",
-		"dateformat": "%a %d.%m.%Y"
+		"dateformat": "%a %d.%m.%Y",
+		"position": {
+			"x": 500,
+			"y": 270
+		}
 	},
 	"WEATHER": {
 		"api": "",
-		"city": ""
+		"city": "",
+		"position": {
+			"x": 1800,
+			"y": 150
+		}
 	}
 }
