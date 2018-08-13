@@ -13,7 +13,7 @@ sys.setdefaultencoding('utf-8')
 
 window = pyglet.window.Window(fullscreen=True)
 
-pyglet.font.add_file('fonts/BenchNine.ttf')
+pyglet.font.add_file('./static/font/BenchNine.ttf')
 BenchNine = pyglet.font.load('BenchNine')
 
 @window.event
@@ -25,6 +25,6 @@ def on_draw():
 if __name__ == '__main__':
     locale.setlocale(locale.LC_ALL, 'cs_CZ.UTF-8')
     dateTiem = DateTime()
-    weather = Weather()
+    #weather = Weather()
     pyglet.clock.schedule_interval_soft(dateTiem.tick, 1)
     pyglet.app.run()
