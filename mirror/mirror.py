@@ -10,6 +10,7 @@ import json
 pyglet.resource.path = ['../static/weather/']
 pyglet.resource.reindex()
 
+from Helper import *
 from DateTime import *
 from Weather import *
 
@@ -39,4 +40,5 @@ if __name__ == '__main__':
     dateTiem = DateTime(window, config)
     weather = Weather(window, config)
     pyglet.clock.schedule_interval_soft(dateTiem.tick, 1)
+    pyglet.clock.schedule_interval_soft(weather.getWeather, 3600)
     pyglet.app.run()

@@ -7,6 +7,8 @@ import requests
 import json
 from datetime import datetime
 
+from Helper import *
+
 class Weather:
 	def __init__(self, window, config):
 		if config['WEATHER']['api'] == "":
@@ -16,93 +18,14 @@ class Weather:
 		self.batch = pyglet.graphics.Batch()
 		self.api = 'https://api.openweathermap.org/data/2.5/forecast?q={:s}&appid={:s}&units=metric&lang=cz'.format(config['WEATHER']['city'], config['WEATHER']['api'])
 
-		self.actualTemp = pyglet.text.Label(
-			'', 
-			font_name='Bree Serif', 
-			font_size=60, 
-			x=window.width-config['WEATHER']['position']['x'], 
-			y=window.height-config['WEATHER']['position']['y'], 
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
-		self.actualWeather = pyglet.text.Label(
-			'', 
-			font_name='Bree Serif', 
-			font_size=20, 
-			x=window.width-config['WEATHER']['position']['x']+180, 
-			y=window.height-config['WEATHER']['position']['y']-55, 
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
-
-
-		self.actualHumidityIcon = pyglet.text.Label(
-			'd',
-			font_name='fontello', 
-			font_size=14, 
-			x=self.window.width-self.config['WEATHER']['position']['x'],
-			y=self.window.height-self.config['WEATHER']['position']['y']-98,
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
-
-		self.actualHumidity = pyglet.text.Label(
-			'', 
-			font_name='Bree Serif', 
-			font_size=14, 
-			x=window.width-config['WEATHER']['position']['x']+20, 
-			y=window.height-config['WEATHER']['position']['y']-95, 
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
-
-		self.actualPressureIcon = pyglet.text.Label(
-			'f',
-			font_name='fontello', 
-			font_size=14, 
-			x=self.window.width-self.config['WEATHER']['position']['x']+75,
-			y=self.window.height-self.config['WEATHER']['position']['y']-98,
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
-
-		self.actualPressure = pyglet.text.Label(
-			'', 
-			font_name='Bree Serif', 
-			font_size=14, 
-			x=window.width-config['WEATHER']['position']['x']+100, 
-			y=window.height-config['WEATHER']['position']['y']-95, 
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
-
-		self.actualWindIcon = pyglet.text.Label(
-			'e',
-			font_name='fontello', 
-			font_size=14, 
-			x=self.window.width-self.config['WEATHER']['position']['x']+200,
-			y=self.window.height-self.config['WEATHER']['position']['y']-98,
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
-
-		self.actualWind = pyglet.text.Label(
-			'', 
-			font_name='Bree Serif', 
-			font_size=14, 
-			x=window.width-config['WEATHER']['position']['x']+220, 
-			y=window.height-config['WEATHER']['position']['y']-95, 
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
+		self.actualTemp = Helper.label(self, '', 60, 0, 0, self.batch, window, config['WEATHER'])
+		self.actualWeather = Helper.label(self, '', 20, 180, -55, self.batch, window, config['WEATHER'])
+		self.actualHumidityIcon = Helper.label(self, 'd', 14, 0, -98, self.batch, window, config['WEATHER'], True)
+		self.actualHumidity = Helper.label(self, '', 14, 20, -95, self.batch, window, config['WEATHER'])
+		self.actualPressureIcon = Helper.label(self, 'f', 14, 75, -98, self.batch, window, config['WEATHER'], True)
+		self.actualPressure = Helper.label(self, '', 14, 100, -95, self.batch, window, config['WEATHER'])
+		self.actualWindIcon = Helper.label(self, 'e', 14, 200, -98, self.batch, window, config['WEATHER'], True)
+		self.actualWind = Helper.label(self, '', 14, 220, -95, self.batch, window, config['WEATHER'])
 		
 		self.getWeather()
 
@@ -122,16 +45,7 @@ class Weather:
 		self.actualPressure.text = '{:02.2f}{:s}'.format(actual['main']['pressure'], 'hPa')
 		self.actualWind.text = '{:02.2f}{:s}'.format(actual['wind']['speed'], 's/m')
 		
-		pyglet.text.Label(
-			self.getWeatherIcon(actual['weather'][0]['icon']),
-			font_name='fontello', 
-			font_size=36, 
-			x=self.window.width-self.config['WEATHER']['position']['x']+175, 
-			y=self.window.height-self.config['WEATHER']['position']['y']-15,
-			anchor_x='left', 
-			anchor_y='top', 
-			align='left',
-			batch=self.batch)
+		Helper.label(self, self.getWeatherIcon(actual['weather'][0]['icon']), 36, 175, -15, self.batch, self.window, self.config['WEATHER'], True)
 
 		self.showForecast()
 
@@ -143,36 +57,31 @@ class Weather:
 		for item in l:
 			index=index+1
 			offset=23*index
-			pyglet.text.Label(
+
+			Helper.label(
+				self, 
 				datetime.strptime(self.weather['list'][item]['dt_txt'], '%Y-%m-%d %H:%M:%S').strftime('%a %H:%M'), 
-				font_name='Bree Serif', 
-				font_size=16, 
-				x=self.window.width-self.config['WEATHER']['position']['x'], 
-				y=self.window.height-self.config['WEATHER']['position']['y']-offsetStart-offset, 
-				anchor_x='left', 
-				anchor_y='top', 
-				align='left',
-				batch=self.batch)
-			pyglet.text.Label(
+				16, 
+				0, 
+				-offsetStart-offset, 
+				self.batch, self.window, self.config['WEATHER'])
+
+			Helper.label(
+				self, 
 				'{:02.0f}{:s}'.format(self.weather['list'][item]['main']['temp'], '°C'),
-				font_name='Bree Serif', 
-				font_size=16, 
-				x=self.window.width-self.config['WEATHER']['position']['x']+85, 
-				y=self.window.height-self.config['WEATHER']['position']['y']-offsetStart-offset, 
-				anchor_x='left', 
-				anchor_y='top', 
-				align='left',
-				batch=self.batch)
-			pyglet.text.Label(
+				16, 
+				85, 
+				-offsetStart-offset, 
+				self.batch, self.window, self.config['WEATHER'])
+
+			Helper.label(
+				self, 
 				self.weather['list'][item]['weather'][0]['description'],
-				font_name='Bree Serif', 
-				font_size=16, 
-				x=self.window.width-self.config['WEATHER']['position']['x']+150, 
-				y=self.window.height-self.config['WEATHER']['position']['y']-offsetStart-offset, 
-				anchor_x='left', 
-				anchor_y='top', 
-				align='left',
-				batch=self.batch)
+				16, 
+				150, 
+				-offsetStart-offset, 
+				self.batch, self.window, self.config['WEATHER'])
+
 
 	def getWeatherIcon(self, iconName):
 		icons = {
