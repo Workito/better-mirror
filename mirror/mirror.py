@@ -7,6 +7,9 @@ import locale
 import sys
 import json
 
+pyglet.resource.path = ['../static/weather/']
+pyglet.resource.reindex()
+
 from DateTime import *
 from Weather import *
 
@@ -20,7 +23,9 @@ c = pyglet.gl.Config(sample_buffers=1, samples=4)
 window = pyglet.window.Window(config=c, fullscreen=True)
 
 pyglet.font.add_file('./static/font/BreeSerif-Regular.ttf')
+pyglet.font.add_file('./static/font/fontello.ttf')
 pyglet.font.load('Bree Serif')
+pyglet.font.load('fontello')
 
 @window.event
 def on_draw():

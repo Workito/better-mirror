@@ -13,29 +13,96 @@ class Weather:
 			return None
 		self.config = config
 		self.window = window
+		self.batch = pyglet.graphics.Batch()
 		self.api = 'https://api.openweathermap.org/data/2.5/forecast?q={:s}&appid={:s}&units=metric&lang=cz'.format(config['WEATHER']['city'], config['WEATHER']['api'])
 
 		self.actualTemp = pyglet.text.Label(
-            '', 
-            font_name='Bree Serif', 
-            font_size=60, 
-            x=window.width-config['WEATHER']['position']['x'], 
-            y=window.height-config['WEATHER']['position']['y'], 
-            anchor_x='left', 
-            anchor_y='top', 
-            align='left')
+			'', 
+			font_name='Bree Serif', 
+			font_size=60, 
+			x=window.width-config['WEATHER']['position']['x'], 
+			y=window.height-config['WEATHER']['position']['y'], 
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
 		self.actualWeather = pyglet.text.Label(
-            '', 
-            font_name='Bree Serif', 
-            font_size=20, 
-            x=window.width-config['WEATHER']['position']['x']+180, 
-            y=window.height-config['WEATHER']['position']['y']-55, 
-            anchor_x='left', 
-            anchor_y='top', 
-            align='left')
-		self.forecastTime = []
-		self.forecastTemp = []
-		self.forecastCloud = []
+			'', 
+			font_name='Bree Serif', 
+			font_size=20, 
+			x=window.width-config['WEATHER']['position']['x']+180, 
+			y=window.height-config['WEATHER']['position']['y']-55, 
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
+
+
+		self.actualHumidityIcon = pyglet.text.Label(
+			'd',
+			font_name='fontello', 
+			font_size=14, 
+			x=self.window.width-self.config['WEATHER']['position']['x'],
+			y=self.window.height-self.config['WEATHER']['position']['y']-98,
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
+
+		self.actualHumidity = pyglet.text.Label(
+			'', 
+			font_name='Bree Serif', 
+			font_size=14, 
+			x=window.width-config['WEATHER']['position']['x']+20, 
+			y=window.height-config['WEATHER']['position']['y']-95, 
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
+
+		self.actualPressureIcon = pyglet.text.Label(
+			'f',
+			font_name='fontello', 
+			font_size=14, 
+			x=self.window.width-self.config['WEATHER']['position']['x']+75,
+			y=self.window.height-self.config['WEATHER']['position']['y']-98,
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
+
+		self.actualPressure = pyglet.text.Label(
+			'', 
+			font_name='Bree Serif', 
+			font_size=14, 
+			x=window.width-config['WEATHER']['position']['x']+100, 
+			y=window.height-config['WEATHER']['position']['y']-95, 
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
+
+		self.actualWindIcon = pyglet.text.Label(
+			'e',
+			font_name='fontello', 
+			font_size=14, 
+			x=self.window.width-self.config['WEATHER']['position']['x']+200,
+			y=self.window.height-self.config['WEATHER']['position']['y']-98,
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
+
+		self.actualWind = pyglet.text.Label(
+			'', 
+			font_name='Bree Serif', 
+			font_size=14, 
+			x=window.width-config['WEATHER']['position']['x']+220, 
+			y=window.height-config['WEATHER']['position']['y']-95, 
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
 		
 		self.getWeather()
 
@@ -51,15 +118,20 @@ class Weather:
 		actual=self.weather['list'][0]
 		self.actualTemp.text='{:02.0f}{:s}'.format(actual['main']['temp'], '°C')
 		self.actualWeather.text=str(actual['weather'][0]['description'])
-		pic = pyglet.image.load('./static/weather/{:s}.png'.format(actual['weather'][0]['icon']))
-		self.pic = pic.get_texture()
-		self.pic.width=50;
-		self.pic.height=50;
-
-		pic=pyglet.image.load('./static/weather/humidity.png')
-		self.picHumidity=pic.get_texture()
-		self.picHumidity.width=20;
-		self.picHumidity.height=20;
+		self.actualHumidity.text = '{:02.0f}{:s}'.format(actual['main']['humidity'], '%')
+		self.actualPressure.text = '{:02.2f}{:s}'.format(actual['main']['pressure'], 'hPa')
+		self.actualWind.text = '{:02.2f}{:s}'.format(actual['wind']['speed'], 's/m')
+		
+		pyglet.text.Label(
+			self.getWeatherIcon(actual['weather'][0]['icon']),
+			font_name='fontello', 
+			font_size=36, 
+			x=self.window.width-self.config['WEATHER']['position']['x']+175, 
+			y=self.window.height-self.config['WEATHER']['position']['y']-15,
+			anchor_x='left', 
+			anchor_y='top', 
+			align='left',
+			batch=self.batch)
 
 		self.showForecast()
 
@@ -71,7 +143,7 @@ class Weather:
 		for item in l:
 			index=index+1
 			offset=23*index
-			self.forecastTime.append(pyglet.text.Label(
+			pyglet.text.Label(
 				datetime.strptime(self.weather['list'][item]['dt_txt'], '%Y-%m-%d %H:%M:%S').strftime('%a %H:%M'), 
 				font_name='Bree Serif', 
 				font_size=16, 
@@ -79,8 +151,9 @@ class Weather:
 				y=self.window.height-self.config['WEATHER']['position']['y']-offsetStart-offset, 
 				anchor_x='left', 
 				anchor_y='top', 
-				align='left'))
-			self.forecastTemp.append(pyglet.text.Label(
+				align='left',
+				batch=self.batch)
+			pyglet.text.Label(
 				'{:02.0f}{:s}'.format(self.weather['list'][item]['main']['temp'], '°C'),
 				font_name='Bree Serif', 
 				font_size=16, 
@@ -88,8 +161,9 @@ class Weather:
 				y=self.window.height-self.config['WEATHER']['position']['y']-offsetStart-offset, 
 				anchor_x='left', 
 				anchor_y='top', 
-				align='left'))
-			self.forecastCloud.append(pyglet.text.Label(
+				align='left',
+				batch=self.batch)
+			pyglet.text.Label(
 				self.weather['list'][item]['weather'][0]['description'],
 				font_name='Bree Serif', 
 				font_size=16, 
@@ -97,17 +171,23 @@ class Weather:
 				y=self.window.height-self.config['WEATHER']['position']['y']-offsetStart-offset, 
 				anchor_x='left', 
 				anchor_y='top', 
-				align='left'))
+				align='left',
+				batch=self.batch)
 
+	def getWeatherIcon(self, iconName):
+		icons = {
+			'01d': '1', '01n': '1',
+			'02d': '2', '02n': '2',
+			'03d': '3', '03n': '3',
+			'04d': '4', '04n': '4',
+			'09d': '9', '09n': '9',
+			'10d': 'a', '10n': 'a',
+			'11d': 'b', '11n': 'b',
+			'13d': 'c', '13n': 'c',
+			'50d': 'd', '50n': 'd'
+		}
+
+		return icons[iconName]
 
 	def draw(self):
-		self.actualTemp.draw()
-		self.actualWeather.draw()
-		self.pic.blit(self.window.width-self.config['WEATHER']['position']['x']+175,self.window.height-self.config['WEATHER']['position']['y']-65)
-		self.picHumidity.blit(self.window.width-self.config['WEATHER']['position']['x'],self.window.height-self.config['WEATHER']['position']['y']-115)
-		for i in self.forecastTime:
-			i.draw()
-		for i in self.forecastTemp:
-			i.draw()
-		for i in self.forecastCloud:
-			i.draw()
+		self.batch.draw()
