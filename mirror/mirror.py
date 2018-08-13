@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pyglet                                                           
-from pyglet.gl import *
+import pyglet
 import locale
 import sys
 import json
@@ -20,8 +19,7 @@ sys.setdefaultencoding('utf-8')
 with open('./config.json', 'r') as f:
     config = json.load(f)
 
-c = pyglet.gl.Config(sample_buffers=1, samples=4)
-window = pyglet.window.Window(config=c, fullscreen=True)
+window = pyglet.window.Window(fullscreen=True)
 
 pyglet.font.add_file('./static/font/BreeSerif-Regular.ttf')
 pyglet.font.add_file('./static/font/fontello.ttf')

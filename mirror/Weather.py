@@ -13,6 +13,7 @@ class Weather:
 	def __init__(self, window, config):
 		if config['WEATHER']['api'] == "":
 			return None
+
 		self.config = config
 		self.window = window
 		self.batch = pyglet.graphics.Batch()
@@ -38,9 +39,9 @@ class Weather:
 
 
 	def showWeather(self):
-		actual=self.weather['list'][0]
-		self.actualTemp.text='{:02.0f}{:s}'.format(actual['main']['temp'], '°C')
-		self.actualWeather.text=str(actual['weather'][0]['description'])
+		actual = self.weather['list'][0]
+		self.actualTemp.text = '{:02.0f}{:s}'.format(actual['main']['temp'], '°C')
+		self.actualWeather.text = str(actual['weather'][0]['description'])
 		self.actualHumidity.text = '{:02.0f}{:s}'.format(actual['main']['humidity'], '%')
 		self.actualPressure.text = '{:02.2f}{:s}'.format(actual['main']['pressure'], 'hPa')
 		self.actualWind.text = '{:02.2f}{:s}'.format(actual['wind']['speed'], 's/m')
@@ -52,34 +53,42 @@ class Weather:
 
 	def showForecast(self):
 		l = [1,2,3,6,10,14,20]
-		index=0;
-		offsetStart=100
+		index = 0;
+		offsetStart = 100
 		for item in l:
-			index=index+1
-			offset=23*index
+			index = index + 1
+			offset = 23 * index
 
 			Helper.label(
-				self, 
-				datetime.strptime(self.weather['list'][item]['dt_txt'], '%Y-%m-%d %H:%M:%S').strftime('%a %H:%M'), 
-				16, 
-				0, 
-				-offsetStart-offset, 
+				self,
+				datetime.strptime(self.weather['list'][item]['dt_txt'], '%Y-%m-%d %H:%M:%S').strftime('%a %H:%M'),
+				16,
+				0,
+				-offsetStart-offset,
 				self.batch, self.window, self.config['WEATHER'])
 
 			Helper.label(
-				self, 
+				self,
 				'{:02.0f}{:s}'.format(self.weather['list'][item]['main']['temp'], '°C'),
-				16, 
-				85, 
-				-offsetStart-offset, 
+				16,
+				85,
+				-offsetStart-offset,
 				self.batch, self.window, self.config['WEATHER'])
 
 			Helper.label(
-				self, 
+				self,
+				self.getWeatherIcon(self.weather['list'][item]['weather'][0]['icon']),
+				14,
+				140,
+				-offsetStart-offset-8,
+				self.batch, self.window, self.config['WEATHER'], True)
+
+			Helper.label(
+				self,
 				self.weather['list'][item]['weather'][0]['description'],
-				16, 
-				150, 
-				-offsetStart-offset, 
+				16,
+				170,
+				-offsetStart-offset,
 				self.batch, self.window, self.config['WEATHER'])
 
 
@@ -97,6 +106,7 @@ class Weather:
 		}
 
 		return icons[iconName]
+
 
 	def draw(self):
 		self.batch.draw()
