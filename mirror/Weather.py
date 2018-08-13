@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import pyglet
-from pyglet.gl import *
 import requests
 import json
 from datetime import datetime
