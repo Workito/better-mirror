@@ -1,0 +1,10 @@
+{
+	"DATETIME": {
+		"timeformat": "%H:%I:%S",
+		"dateformat": "%a %d.%m.%Y"
+	},
+	"WEATHER": {
+		"api": "",
+		"city": ""
+	}
+}

@@ -4,12 +4,16 @@
 import pyglet
 import locale
 import sys
+import json
 
 from DateTime import *
 from Weather import *
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+with open('./config.json', 'r') as f:
+    config = json.load(f)
 
 window = pyglet.window.Window(fullscreen=True)
 
@@ -24,7 +28,7 @@ def on_draw():
 
 if __name__ == '__main__':
     locale.setlocale(locale.LC_ALL, 'cs_CZ.UTF-8')
-    dateTiem = DateTime()
-    #weather = Weather()
+    dateTiem = DateTime(window, config)
+    weather = Weather(window, config)
     pyglet.clock.schedule_interval_soft(dateTiem.tick, 1)
     pyglet.app.run()
