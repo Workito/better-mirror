@@ -43,15 +43,13 @@ class MyCalendar:
 
 	def drawCalendar(self):
 		index = 0;
-		for item in self.calc:
+		for item in self.calc[0:8]:
 
 			Helper.label(self, item[1].strftime('%d.%m.%Y'), 12, -90, -index * 40, self.batch, self.window, self.config['CALENDAR'])
 			Helper.label(self, item[2], 12, 0, -index * 40, self.batch, self.window, self.config['CALENDAR'])
 			Helper.label(self, item[4], 10, 0, -index * 40 - 18, self.batch, self.window, self.config['CALENDAR'])
 
 			index = index + 1
-			if index > 8:
-				return None
 
 
 	def draw(self):

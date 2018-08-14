@@ -4,7 +4,7 @@
 		"dateformat": "%a %d.%m.%Y",
 		"position": {
 			"x": 500,
-			"y": 270
+			"y": 170
 		}
 	},
 	"WEATHER": {
@@ -12,14 +12,21 @@
 		"city": "",
 		"position": {
 			"x": 1800,
-			"y": 150
+			"y": 50
 		}
 	},
 	"CALENDAR": {
 		"icals": [""],
 		"position": {
 			"x": 500,
-			"y": 400
+			"y": 300
+		}
+	},
+	"NEWS": {
+		"feed" : "https://news.google.com/?hl=cs&gl=CZ&ceid=CZ:cs&output=rss",
+		"position": {
+			"x": 1800,
+			"y": 900
 		}
 	}
 }

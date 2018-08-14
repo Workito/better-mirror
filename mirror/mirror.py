@@ -12,6 +12,7 @@ pyglet.resource.reindex()
 from DateTime import *
 from Weather import *
 from Calendar import *
+from News import *
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -32,6 +33,7 @@ def on_draw():
 	dateTiem.draw()
 	weather.draw()
 	calendar.draw()
+	news.draw()
 
 
 if __name__ == '__main__':
@@ -40,6 +42,7 @@ if __name__ == '__main__':
 	dateTiem = DateTime(window, config)
 	weather = Weather(window, config)
 	calendar = MyCalendar(window, config)
+	news = News(window, config)
 
 	pyglet.clock.schedule_interval_soft(dateTiem.tick, 1)
 	pyglet.clock.schedule_interval_soft(dateTiem.getNameDay, 60 * 60 * 6)
