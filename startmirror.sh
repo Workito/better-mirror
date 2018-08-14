@@ -1,3 +1,4 @@
 #!/bin/bash
 
-python mirror/mirror.py
+python webserver/CheckSettings.py &
+python mirror/mirror.py &

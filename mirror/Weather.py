@@ -108,4 +108,5 @@ class Weather:
 
 
 	def draw(self):
-		self.batch.draw()
+		if Helper.getWebConfig(self)['active'] == 'True':
+			self.batch.draw()

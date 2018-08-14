@@ -22,6 +22,7 @@ class DateTime:
 
 
 	def tick(self, *args):
+		Helper.getWebConfig(self, (int(time.strftime('%S'))%5))
 		self.time.text = time.strftime(self.config['DATETIME']['timeformat'])
 		self.date.text = time.strftime(self.config['DATETIME']['dateformat'])
 
@@ -33,4 +34,5 @@ class DateTime:
 
 
 	def draw(self):
-		self.batch.draw()
+		if Helper.getWebConfig(self)['active'] == 'True':
+			self.batch.draw()

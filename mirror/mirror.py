@@ -17,15 +17,15 @@ from News import *
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-with open('./config.json', 'r') as f:
-	config = json.load(f)
-
 window = pyglet.window.Window(fullscreen=True)
 
 pyglet.font.add_file('./static/font/BreeSerif-Regular.ttf')
 pyglet.font.add_file('./static/font/fontello.ttf')
 pyglet.font.load('Bree Serif')
 pyglet.font.load('fontello')
+
+with open('./config.json', 'r') as f:
+	config = json.load(f)
 
 @window.event
 def on_draw():
@@ -38,6 +38,7 @@ def on_draw():
 
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, 'cs_CZ.UTF-8')
+
 
 	dateTiem = DateTime(window, config)
 	weather = Weather(window, config)
