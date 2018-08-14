@@ -1,6 +1,6 @@
 {
 	"DATETIME": {
-		"timeformat": "%H:%I:%S",
+		"timeformat": "%H:%M:%S",
 		"dateformat": "%a %d.%m.%Y",
 		"position": {
 			"x": 500,
