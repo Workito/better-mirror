@@ -45,8 +45,9 @@ if __name__ == '__main__':
 	news = News(window, config)
 
 	pyglet.clock.schedule_interval_soft(dateTiem.tick, 1)
-	pyglet.clock.schedule_interval_soft(dateTiem.getNameDay, 60 * 60 * 6)
-	pyglet.clock.schedule_interval_soft(weather.getWeather, 60 * 60)
-	pyglet.clock.schedule_interval_soft(calendar.getEventsFromCalendars, 60)
+	pyglet.clock.schedule_interval_soft(dateTiem.getNameDay, 60 * 60 * 6 + 1)
+	pyglet.clock.schedule_interval_soft(weather.getWeather, 60 * 10 + 3)
+	pyglet.clock.schedule_interval_soft(calendar.getEventsFromCalendars, 60 * 5 + 5)
+	pyglet.clock.schedule_interval_soft(news.getNews, 60 * 20 + 7)
 
 	pyglet.app.run()
