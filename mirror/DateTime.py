@@ -26,6 +26,10 @@ class DateTime:
 		self.time.text = time.strftime(self.config['DATETIME']['timeformat'])
 		self.date.text = time.strftime(self.config['DATETIME']['dateformat'])
 
+		self.time.color = self.date.color = self.nameDay.color = (255, 255, 255, 255)
+		if Helper.getWebConfig(self)['active'] != 'True':
+			self.time.color = self.date.color = self.nameDay.color = (180, 180, 180, 180)
+
 
 	def getNameDay(self):
 		nameDay = requests.get('https://api.abalin.net/get/today?country=cz');
@@ -34,5 +38,4 @@ class DateTime:
 
 
 	def draw(self):
-		if Helper.getWebConfig(self)['active'] == 'True':
-			self.batch.draw()
+		self.batch.draw()

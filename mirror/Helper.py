@@ -8,13 +8,18 @@ class Helper:
 	_webcnf = None
 
 	@staticmethod
-	def label(self, text, size, x, y, batch, window, config, useIcon = False):
+	def label(self, text, size, x, y, batch, window, config, useIcon = False, shadow = False):
 		font = 'Bree Serif'
 		if useIcon:
 			font = 'fontello'
 
+		color = (255, 255, 255, 255)
+		if shadow:
+			color = (155, 155, 155, 155)
+
 		return pyglet.text.Label(
 			text,
+			color = color,
 			font_name = font,
 			font_size = size,
 			x = window.width - config['position']['x'] + x,
