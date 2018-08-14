@@ -3,27 +3,55 @@
 
 import pyglet
 import requests
-import time
+
 import datetime
+import time
 import icalendar
+
 from Helper import *
+
 
 class MyCalendar:
 	def __init__(self, window, config):
 		self.config = config
 		self.window = window
 		self.batch = pyglet.graphics.Batch()
-		"""
-		#Helper.label(self, 'test', 20, 0, 0, self.batch, self.window, self.config['CALENDAR'])
+		self.calc = []
+		
+		self.getEventsFromCalendars()
+
+
+	def getEventsFromCalendars(self):
+		now = time.time()
+		for calendar in self.config['CALENDAR']['icals']:
+			icalfile = requests.get(calendar)
+			cal = icalendar.Calendar.from_ical(icalfile.text)
+			for component in cal.walk():
+				if component.name == "VEVENT":
+					summary = component.get('summary')
+					description = component.get('description')
+					location = component.get('location')
+					startdt = component.get('dtstart').dt
+					if time.mktime(startdt.timetuple()) >= now:
+						if location == None:
+							location = ""
+						self.calc.append([time.mktime(startdt.timetuple()), startdt, summary, description, location])
+
+		self.calc = sorted(self.calc, key=lambda x: x[0])
+		self.drawCalendar()
+
+
+	def drawCalendar(self):
 		index = 0;
-		for cals in self.config['CALENDAR']['icals']:
-			ics = requests.get(cals)
-			cal = Calendar(ics.text)
-			for event in cal.events:
-				if event.begin.timestamp > time.time():
-					index = index + 1
-					Helper.label(self, '{:s} {:s}'.format(event.begin.humanize(), event.name), 20, 0, -index * 20, self.batch, self.window, self.config['CALENDAR'])
-		"""
+		for item in self.calc:
+
+			Helper.label(self, item[1].strftime('%d.%m.%Y'), 12, -90, -index * 40, self.batch, self.window, self.config['CALENDAR'])
+			Helper.label(self, item[2], 12, 0, -index * 40, self.batch, self.window, self.config['CALENDAR'])
+			Helper.label(self, item[4], 10, 0, -index * 40 - 18, self.batch, self.window, self.config['CALENDAR'])
+
+			index = index + 1
+			if index > 8:
+				return None
 
 
 	def draw(self):
